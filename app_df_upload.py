@@ -1,13 +1,16 @@
 import streamlit as st
+import pandas as pd
 from df_handler import DataframeHandler
 
 st.title("Dataframe Visualizer") # GUI title
 
 # st.sidebar -> Left panel sidebar
-st.sidebar.text_input("Dataframe Path", key="file_path", placeholder="data/filename.csv")
-st.write("Dataframe:", st.session_state.file_path)
+input_file = st.sidebar.file_uploader("Upload Dataframe", key="file_uploader", type=["csv"])
 
-df_handler = DataframeHandler(path=st.session_state.file_path)
+if input_file: 
+    df_handler = DataframeHandler(df=pd.read_csv(input_file))
+else: 
+    df_handler = DataframeHandler(df=pd.DataFrame())
 
 st.dataframe(df_handler.df) # Render Dataframe
 
